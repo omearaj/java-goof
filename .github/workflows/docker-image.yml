@@ -9,6 +9,7 @@ on:
 env:
   # TODO: Change variable to your image's name.
   IMAGE_NAME: java-goof
+  DOCKER_USERNAME: omearaj
 
 jobs:
 
@@ -44,6 +45,6 @@ jobs:
         image: omearaj/image
         tags: v1, latest
         registry: ghcr.io
-        dockerfile: Dockerfile.ci
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+        dockerfile: Dockerfile
+        username: ${{ env.DOCKER_USERNAME }}
+        password: ${{ GITHUB_TOKEN }}
