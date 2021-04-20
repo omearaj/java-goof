@@ -33,18 +33,33 @@ jobs:
   push:
     # Ensure test job passes before pushing image.
     needs: build
+    name: Push Docker image to GitHub Packages
     runs-on: ubuntu-latest
-    
+    #permissions:
+    #  packages: write
+    #  contents: read
     steps:
-    - uses: actions/checkout@v2
-      name: Check out code
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Push to GitHub Packages
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          repository: omearaj/java-goof/java-goof
+          tag_with_ref: true
+    
+ #   steps:
+ #   - uses: actions/checkout@v2
+ #     name: Check out code
 
-    - uses: mr-smithers-excellent/docker-build-push@v5
-      name: Build & push Docker image
-      with:
-        image: ${{ env.IMAGE_NAME }}
-        tags: v1, latest
-        registry: ghcr.io
-        dockerfile: Dockerfile
-        username: ${{ env.DOCKER_USERNAME }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+ #   - uses: mr-smithers-excellent/docker-build-push@v5
+ #     name: Build & push Docker image
+ #     with:
+ #       image: ${{ env.IMAGE_NAME }}
+ #       tags: v1, latest
+ #       registry: ghcr.io
+ #       dockerfile: Dockerfile
+ #       username: ${{ env.DOCKER_USERNAME }}
+ #       password: ${{ secrets.GITHUB_TOKEN }}
